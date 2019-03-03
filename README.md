@@ -26,10 +26,10 @@ Sitemap example:
 
 ~~~json
 {
-    "index.html": TXID,
+    "index.html": "83487c6c178ba430e29d0b25239597e15328a07f2b6f159a6e1d43f5d946cbf4",
     "js/app.js":[
-        Chunk1TXID,
-        Chunk2TXIO
+        "9defd281159a9d0ba2b58f3f70b20f963ed07fa1f1c86ba50f2114f29e2cd554",
+        "3ea1db51622b46518312c6f261b065d8a5a2b39cf59dcda6aeb6924f9f698b87"
     ]
 }
 ~~~
@@ -136,7 +136,7 @@ Sitemap protocol is a OP_RETURN protocol.
 
 It is built as
 
-> OP_RETURN <Identifier> <Sitemap> <signature> <version>
+OP_RETURN `<Identifier>` `<Sitemap>` `<signature>` `<version>`
 
 `Identifier`(or CrypticPrefix) is generated from SiteId and Public key, which create unique prefix for each site.
 
