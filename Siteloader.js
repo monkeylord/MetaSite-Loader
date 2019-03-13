@@ -37,8 +37,8 @@ SiteLoader.prototype.hResponse = function (scriptTX){
         return Promise.all(scriptTX.map(tx=>fetch(this.httpGateway + tx))).then(rsps=>{
             if(!rsps.every(rsp=>rsp.status==200))throw new Error("not all chunks succuss")
             var headers = rsps[0].headers
-            return Promise.all(rsps.map(rsp=>rsp.text()))
-                    .then(texts=>new Response(texts.join(""), {headers : headers}))
+            return Promise.all(rsps.map(rsp=>rsp.blob()))
+                    .then(blobs=>new Response(new Blob(blobs,{type:blobs[0].type}), {headers : headers}))
         }).catch(err=>new Response(err, {status: 500}))
     }
     else {
@@ -59,7 +59,7 @@ SiteLoader.prototype.buildQuery = function (){
           "find": { "out.s1": this.crypticPrefix}
         },
         "r": {
-          "f": "[ .[] | {sitemap: .out[0].ls2, sig: .out[0].s3, version: .out[0].s4, blk:.blk.i} ]"
+          "f": "[ .[] | {sitemap: .out[0].ls2, sitemap_short: .out[0].s2, sig: .out[0].s3, version: .out[0].s4, blk:.blk.i} ]"
         }
     }
 }
@@ -70,6 +70,7 @@ SiteLoader.prototype.initSitemap = function (){
     var url = this.endpoint + b64
     var header = {headers: { key: this.apikey }}
     fetch(url, header).then(r=>r.json()).then(r=>{
+        r.c.forEach(map=>map.sitemap=map.sitemap || map.sitemap_short)
         var trustedSitemaps=r.c.sort((a,b)=>b.blk-a.blk).sort((a,b)=>b.version-a.version).filter((entry)=>this.verifySig(this.siteInfo.siteId + entry.sitemap + ((entry.version!=null) ? entry.version : ""),entry.sig))
         if(trustedSitemaps.length>0){
             console.log("Latest Sitemap Version:"+trustedSitemaps[0].version)
@@ -89,10 +90,10 @@ SiteLoader.prototype.verifySig = function(url,sig){
 SiteLoader.prototype.fetch = function(event){
   if(!this.inited){
       this.initSitemap()
-      event.respondWith(new Response("SiteLoader is loading newest sitemap, refresh and try again.<script>setTimeout('location.reload()',5000)</script>", {status: 500, headers:{"Content-Type":"text/html;charset=utf-8"}}))
+      event.respondWith(new Response("SiteLoader is loading latest sitemap, please wait for a few seconds.<script>setTimeout('location.reload()',3000)</script>", {status: 500, headers:{"Content-Type":"text/html;charset=utf-8"}}))
       return
   }
-  var url = event.request.url.replace(event.target.registration.scope,"")
+  var url = decodeURI(event.request.url.replace(event.target.registration.scope,""))
   // Do not handle any parameters in url
   url = url.split('?')[0]
   if(url == "")this.initSitemap()
@@ -103,6 +104,7 @@ SiteLoader.prototype.fetch = function(event){
   if (scriptTX != undefined) {
     // return event.respondWith(new Response(scriptTX, {status: 500}))
     // bResponse(event, scriptTX)
+    console.log("TXID:"+scriptTX)
     event.respondWith(this.hResponse(scriptTX))
   }
 }

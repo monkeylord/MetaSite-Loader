@@ -1,0 +1,32 @@
+{
+  "name": "metasite-loader",
+  "version": "1.0.0",
+  "description": "A repository for metasite-loader.",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/monkeylord/MetaSite-Loader.git"
+  },
+  "keywords": [
+    "bsv",
+    "metasite",
+    "metanet",
+    "bitcoin"
+  ],
+  "author": "Monkeylord",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/monkeylord/MetaSite-Loader/issues"
+  },
+  "homepage": "https://github.com/monkeylord/MetaSite-Loader#readme",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "node-jsencrypt": "^1.0.0"
+  }
+}
