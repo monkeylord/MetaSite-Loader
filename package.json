@@ -1,6 +1,6 @@
 {
   "name": "metasite-loader",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A repository for metasite-loader.",
   "main": "index.js",
   "directories": {
@@ -26,7 +26,9 @@
   },
   "homepage": "https://github.com/monkeylord/MetaSite-Loader#readme",
   "dependencies": {
+    "crypto-js": "^3.1.9-1",
     "ejs": "^2.6.1",
+    "node-fetch": "^2.3.0",
     "node-jsencrypt": "^1.0.0"
   }
 }
