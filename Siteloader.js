@@ -70,6 +70,7 @@ SiteLoader.prototype.initSitemap = function (){
     var url = this.endpoint + b64
     var header = {headers: { key: this.apikey }}
     fetch(url, header).then(r=>r.json()).then(r=>{
+        r.c = r.c.concat(r.u)
         r.c.forEach(map=>map.sitemap=map.sitemap || map.sitemap_short)
         var trustedSitemaps=r.c.sort((a,b)=>b.blk-a.blk).sort((a,b)=>b.version-a.version).filter((entry)=>this.verifySig(this.siteInfo.siteId + entry.sitemap + ((entry.version!=null) ? entry.version : ""),entry.sig))
         if(trustedSitemaps.length>0){

@@ -1,6 +1,6 @@
 {
   "name": "metasite-loader",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "A repository for metasite-loader.",
   "main": "index.js",
   "directories": {

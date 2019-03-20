@@ -84,6 +84,7 @@ Loader.prototype.querySitemap = function(){
     var url = "https://genesis.bitdb.network/q/1FnauZ9aUH2Bex6JzdcV4eNX7oLSSEbxtN/" + b64
     var header = {headers: { key: "18toxD9NQ3DcgzQ9nP8ZhhhgioARJdwiKn" }}
     return fetch(url, header).then(r=>r.json()).then(r=>{
+        r.c = r.c.concat(r.u)
         r.c.forEach(map=>map.sitemap=map.sitemap || map.sitemap_short)
         maps=r.c
         var sitemaps=maps
